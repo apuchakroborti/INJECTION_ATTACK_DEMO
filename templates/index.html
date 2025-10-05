@@ -1,0 +1,67 @@
+<!doctype html>
+<title>Security Demo — Safe Educational</title>
+<h2>Security Demo — Safe Educational</h2>
+
+<!-- Newly added for the unsafe sql execution -->
+<!-- Add this to your HTML template -->
+<h3>SQL Injection Demo</h3>
+<p>Test user: <b>alice</b> / <b>secret</b></p>
+<p>Try these injection examples:</p>
+<ul>
+    <li><code>' OR '1'='1</code> - Show all users</li>
+    <li><code>admin' --</code> - Login as admin without password</li>
+    <li><code>' UNION SELECT id, username, role FROM users --</code> - Extract all data</li>
+    <li><code>' OR 1=1 --</code> - Alternative bypass</li>
+</ul>
+<!-- Newly added for the unsafe sql execution:: end -->
+
+<!-- SQL Injection Section -->
+<h3>SQL Injection Demo</h3>
+<p>Test user: <b>alice</b> / <b>secret</b></p>
+<form method="post" action="{{ url_for('vulnerable') }}">
+  <label>Username: <input name="username" required></label><br>
+  <label>Password: <input name="password" required type="password"></label><br>
+  <button type="submit">Vulnerable (demo) — SHOW built SQL (not executed)</button>
+</form>
+
+<!-- Newly added for the unsafe sql execution -->
+<!-- Add a button to show all users -->
+<form method="get" action="{{ url_for('show_all_users') }}">
+  <button type="submit">Show All Users in Database</button>
+</form>
+<!-- Newly added for the unsafe sql execution:: end -->
+
+
+<hr>
+<form method="post" action="{{ url_for('secure_login') }}">
+  <label>Username: <input name="username" required></label><br>
+  <label>Password: <input name="password" required type="password"></label><br>
+  <button type="submit">Secure Login (parameterized)</button>
+</form>
+
+<!-- Command Injection Section -->
+<h3>Command Injection Demo</h3>
+<p>Try: <code>google.com && ls</code> or <code>google.com ; cat /etc/passwd</code></p>
+<form method="post" action="{{ url_for('vulnerable_ping') }}">
+  <label>Enter host to ping: 
+    <input name="host" value="google.com" required>
+  </label><br>
+  <button type="submit">Vulnerable Ping (command injection)</button>
+</form>
+<hr>
+<form method="post" action="{{ url_for('secure_ping') }}">
+  <label>Enter host to ping: 
+    <input name="host" value="google.com" required>
+  </label><br>
+  <button type="submit">Secure Ping (validated)</button>
+</form>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul>
+    {% for m in messages %}
+      <li><b>{{m}}</b></li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
