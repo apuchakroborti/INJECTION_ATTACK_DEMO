@@ -143,6 +143,7 @@ def show_injection_analysis(username, password, unsafe_sql, results):
         flash("🚨 In a real attack, this could modify or delete database contents!", "error")
         flash("🛡️ <strong>Protected:</strong> This demo only allows SELECT queries for safety", "info")
 
+# Using this api, the current list of users can be fetched
 @app.route("/show_all_users")
 def show_all_users():
     """
@@ -248,6 +249,9 @@ def vulnerable_ping():
             # Normal ping execution (simulated or real)
             # For safety, we'll just simulate normal ping
             flash(f"📡 Ping result for {host}: Simulated ping output", "info")
+            # These values are initially set as placeholders (dummy data) for the static ping results. They must be dynamically
+            # overwritten in the subsequent code by executing the 'ping' command against the specified host to obtain and display
+            # real-time, updated network metrics.
             flash("PING google.com (142.250.191.78): 56 data bytes", "info")
             flash("64 bytes from 142.250.191.78: icmp_seq=0 ttl=117 time=15.283 ms", "info")
             flash("64 bytes from 142.250.191.78: icmp_seq=1 ttl=117 time=12.456 ms", "info")
@@ -259,6 +263,9 @@ def vulnerable_ping():
     
     return redirect(url_for('index'))
 
+# The `shlex.quote()` method is used to mitigate command injection vulnerabilities by taking an input string 
+# and adding shell-appropriate quotes, effectively sanitizing the string so that any special shell characters it contains (such as semicolons or pipes) 
+# are treated as literal arguments rather than executable commands, thereby preventing malicious code from being executed within the system.
 @app.route('/secure_ping', methods=['POST'])
 def secure_ping():
     host = request.form['host']
