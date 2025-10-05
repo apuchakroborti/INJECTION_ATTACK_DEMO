@@ -259,33 +259,6 @@ def vulnerable_ping():
     
     return redirect(url_for('index'))
 
-# Command Injection Demo Routes
-# @app.route('/vulnerable_ping', methods=['POST'])
-# def vulnerable_ping():
-#     host = request.form['host']
-    
-#     # VULNERABLE: Direct string concatenation - susceptible to command injection
-#     try:
-#         # This is dangerous - user input is directly used in shell command
-#         command = f"ping -c 4 {host}"
-#         flash(f"⚠️ VULNERABLE COMMAND EXECUTED: {command}", "warning")
-        
-#         # For demo purposes, we'll simulate the output without actually executing
-#         # In a real vulnerable app, this would be: result = subprocess.run(command, shell=True, capture_output=True, text=True)
-        
-#         # Simulate what would happen with command injection
-#         if "&&" in host or ";" in host or "|" in host:
-#             flash("🚨 Command injection detected! Additional commands would have been executed.", "error")
-#             flash(f"Example: 'ls' command would show directory contents", "error")
-#             flash(f"Example: 'cat /etc/passwd' would show system files", "error")
-#         else:
-#             flash(f"Ping result for {host}: Simulated ping output", "info")
-            
-#     except Exception as e:
-#         flash(f"Error: {str(e)}", "error")
-    
-#     return redirect(url_for('index'))
-
 @app.route('/secure_ping', methods=['POST'])
 def secure_ping():
     host = request.form['host']
